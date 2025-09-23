@@ -8,7 +8,9 @@ def generate_launch_description():
             executable='parameter_bridge',
             arguments=[
                 '/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan',
-                '/imu@sensor_msgs/msg/Imu@gz.msgs.IMU'
+                '/imu@sensor_msgs/msg/Imu@gz.msgs.IMU',
+                '/diff_drive_base/cmd_vel_unstamped@geometry_msgs/msg/Twist@gz.msgs.Twist',
+                '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry'
             ],
             output='screen'
         )

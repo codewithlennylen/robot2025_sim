@@ -65,15 +65,15 @@ def generate_launch_description():
     world_file = os.path.join(pkg_share, 'worlds', 'maze.sdf')
 
     controller_params = os.path.join(
-        './src/robot2025_sim/config', 'diff_drive_controller.yaml')
-    # controller_params = os.path.join(
-    #     pkg_share, 'config', 'diff_drive_controller.yaml')
+        pkg_share, 'config', 'diff_drive_controller.yaml')
 
     gz_launch = os.path.join(
         get_package_share_directory('ros_gz_sim'),
         'launch',
         'gz_sim.launch.py'
     )
+
+    bridge_launch = os.path.join(pkg_share, 'launch', 'bridge.launch.py')
 
     return LaunchDescription([
 
@@ -115,9 +115,7 @@ def generate_launch_description():
                 '-topic', 'robot_description',
                 '-x', '0', '-y', '0', '-z', '0.1'
             ],
-            output='screen',
-            parameters=[os.path.join(pkg_share, 'config', 'ros2_control.yaml')]
-            # parameters=[controller_params]
+            output='screen'
         ),
         # Node(
         #     package='ros_gz_sim',
@@ -128,43 +126,11 @@ def generate_launch_description():
         # ),
 
 
-        # NOTE: Gz runs this automatically
-        # ros2_control controller manager
-        # Node(
-        #     package='controller_manager',
-        #     executable='ros2_control_node',
-        #     parameters=[controller_params],
-        #     output='screen'
-        # ),
 
-        # Load controller params into Gazebo's controller_manager
-        # Spawn diff drive controller
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['diff_drive_base'],
+
+        # Start ROS-Gazebo bridge
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(bridge_launch)
         ),
-
-
-        # Node(
-        #     package='controller_manager',
-        #     executable='spawner',
-        #     arguments=['diff_cont'],
-        #     output='screen'
-        # ),
-        # Node(
-        #     package='controller_manager',
-        #     executable='spawner',
-        #     arguments=['diff_cont', '--param-file', controller_params],
-        #     output='screen'
-        # ),
-        Node(
-            package="controller_manager",
-            executable="spawner",
-            arguments=["joint_state_broadcaster",
-                       "--controller-manager", "/controller_manager"],
-            output="screen"
-        ),
-
 
     ])
