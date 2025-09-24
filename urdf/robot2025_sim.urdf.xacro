@@ -145,28 +145,29 @@
         </joint>
     </ros2_control>
 
-    <!-- Gazebo plugin: ros2_control -->
-    <!-- <gazebo>
-        <plugin filename="gz_ros2_control-system" name="ros2_control" />
-    </gazebo> -->
+    <!-- Ignition Gazebo diff drive plugin -->
     <gazebo>
-        <!-- <plugin
-            filename="gz_ros2_control-system"
-            name="gz::ros2_control::GazeboSystem" /> -->
-        <!-- <plugin filename="libign_ros2_control-system.so"
-            name="ign_ros2_control::IgnitionROS2ControlPlugin"></plugin> -->
-        <!-- <plugin
-            filename="libgz_ros2_control-system.so"
-            name="gz::ros2_control::GazeboSystem" /> -->
-
         <plugin
-            filename="libgz_ros2_control-system.so"
-            name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-            <parameters>
-                /home/lenny/Documents/GitHub/rdj/baseline_robot_ws/src/robot2025_sim/config/diff_drive_controller.yaml
-            </parameters>
+            filename="libignition-gazebo-diff-drive-system.so"
+            name="ignition::gazebo::systems::DiffDrive">
+            <left_joint>left_wheel_joint</left_joint>
+            <right_joint>right_wheel_joint</right_joint>
+            <wheel_separation>0.3</wheel_separation>
+            <wheel_radius>0.05</wheel_radius>
+            <odom_publish_frequency>30</odom_publish_frequency>
+            <max_linear_acceleration>1</max_linear_acceleration>
+            <min_linear_acceleration>-1</min_linear_acceleration>
+            <max_angular_acceleration>2</max_angular_acceleration>
+            <min_angular_acceleration>-2</min_angular_acceleration>
+            <max_linear_velocity>0.5</max_linear_velocity>
+            <min_linear_velocity>-0.5</min_linear_velocity>
+            <max_angular_velocity>1</max_angular_velocity>
+            <min_angular_velocity>-1</min_angular_velocity>
+            <topic>diff_drive_base/cmd_vel_unstamped</topic>
+            <odom_topic>odom</odom_topic>
+            <frame_id>odom</frame_id>
+            <child_frame_id>base_link</child_frame_id>
         </plugin>
-
     </gazebo>
 
     <ros2_control name="GazeboSystem" type="system">
